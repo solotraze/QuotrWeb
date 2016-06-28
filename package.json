@@ -2,7 +2,7 @@
   "name": "quotr",
   "version": "1.0.0",
   "description": "quotr",
-  "main": "app.js",
+  "main": "server.js",
   "directories": {
     "test": "test"
   },
@@ -11,18 +11,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/solotraze/quotr.git"
+    "url": "git+https://github.com/solotraze/QuotrWeb.git"
   },
   "author": "",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/solotraze/quotr/issues"
+    "url": "https://github.com/solotraze/QuotrWeb/issues"
   },
-  "homepage": "https://github.com/solotraze/quotr#readme",
+  "homepage": "https://github.com/solotraze/QuotrWeb#readme",
   "dependencies": {
     "chai": "^3.5.0",
     "cheerio": "^0.20.0",
+    "express": "^4.14.0",
     "mocha": "^2.5.3",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "socket.io": "^1.4.8"
   }
 }
