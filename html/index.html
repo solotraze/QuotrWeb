@@ -1,7 +1,13 @@
+<!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8" />
+  <title>Quotr</title>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/dist/scripts/jquery-3.0.0.min.js"></script>
+  <script src="/dist/scripts/react/react.js"></script>
+  <script src="/dist/scripts/react/react-dom.js"></script>
+  <script src="/dist/scripts/react/browser.min.js"></script>
   <script src="/dist/scripts/index.js"></script>
 </head>
 <body>
@@ -9,5 +15,7 @@
     //var socket = io();
   </script>
   <h1>Hello there!</h1>
+  <div id="divQuoteContent"></div>
+  <script type="text/babel" src="/dist/scripts/index_react.js"></script>
 </body>
 </html>

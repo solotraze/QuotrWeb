@@ -5,9 +5,12 @@ $(document).ready(function(){
   socket.on('register_code', function(msg) {
     console.log('Code registered');
   });
+  // Following will be done from react ready event in index_react.js
+  /*
   socket.on('quote', function(quote) {
     console.log(quote);
   });
+  */
 });
 
 var getQuote = function(stockCode) {
