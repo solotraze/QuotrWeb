@@ -1,7 +1,10 @@
 var socket; 
 
 $(document).ready(function(){
-  socket = io(); 
+  // OpenShift exposes websockets on a specific port. So use that.
+  //socket = io(); 
+  socket = io.connect('http://quotrweb-littlestory.rhcloud.com:8000', {'forceNew':true}); 
+
   socket.on('register_code', function(msg) {
     console.log('Code registered');
   });
