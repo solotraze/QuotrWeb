@@ -2,11 +2,13 @@ var request = require('request');
 var cheerio = require('cheerio');
 var quoteUrl = 'http://getquote.icicidirect.com/trading_stock_quote.aspx?symbol='
 
-var processAttribute = function ($, caption) {
+var processAttribute = function ($, attribute) {
   // TODO: contains seems not correct. use something ==
-  var nseElement = $("td:contains("+caption+")").next();
-  var nseVal = parseFloat(nseElement.text().trim());
-  var bseVal = parseFloat(nseElement.next().text().trim());
+  var nseElement = $("td:contains("+ attribute.caption+ ")").next();
+  var nseText = (nseElement.text().trim());
+  var bseText = (nseElement.next().text().trim());
+  var nseVal = attribute.type === 'number' ? parseFloat(nseText) : nseText;
+  var bseVal = attribute.type === 'number' ? parseFloat(bseText) : bseText;
 
   var attributeValues = { nseVal: nseVal, bseVal: bseVal };
   return attributeValues;
@@ -17,29 +19,29 @@ var parseResponse = function (html) {
   var quoteObj = { nse: { }, bse: { } };
 
   var attributeMapping = [
-    {key:'lastTradeDate',caption:'DATE'},
-    {key:'lastTradeTime',caption:'LAST TRADED TIME'},
-    {key:'lastTradedPrice',caption:'LAST TRADE PRICE'},
-    {key:'bestBid',caption:'BEST BID PRICE'},
-    {key:'bestBidQuantity',caption:'BEST BID QTY'},
-    {key:'bestOffer',caption:'BEST OFFER PRICE'},
-    {key:'bestOfferQuantity',caption:'BEST OFFER QTY'},
+    {key:'lastTradeDate',caption:'DATE',type:'date'},
+    {key:'lastTradeTime',caption:'LAST TRADED TIME',type:'time'},
+    {key:'lastTradedPrice',caption:'LAST TRADE PRICE',type:'number'},
+    {key:'bestBid',caption:'BEST BID PRICE',type:'number'},
+    {key:'bestBidQuantity',caption:'BEST BID QTY',type:'number'},
+    {key:'bestOffer',caption:'BEST OFFER PRICE',type:'number'},
+    {key:'bestOfferQuantity',caption:'BEST OFFER QTY',type:'number'},
     //stats:
-    {key:'dayOpen',caption:'DAY OPEN'},
-    {key:'dayClose',caption:'* DAY CLOSE'},
-    {key:'closeLastDay',caption:'PREVIOUS DAY CLOSE'},
-    {key:'dayChange',caption:'CHANGE'},
-    {key:'dayChangePercentage',caption:'% CHANGE'},
-    {key:'dayHigh',caption:'DAY HIGH'},
-    {key:'dayLow',caption:'DAY LOW'},
-    {key:'yearHigh',caption:'52 WEEK HIGH'},
-    {key:'yearLow',caption:'52 WEEK LOW'},
-    {key:'lifeHigh',caption:'LIFE TIME HIGH'},
-    {key:'lifeLow',caption:'LIFE TIME LOW'},
-    {key:'dayVolume',caption:'DAY VOLUME'},
+    {key:'dayOpen',caption:'DAY OPEN',type:'number'},
+    {key:'dayClose',caption:'* DAY CLOSE',type:'number'},
+    {key:'closeLastDay',caption:'PREVIOUS DAY CLOSE',type:'number'},
+    {key:'dayChange',caption:'CHANGE',type:'number'},
+    {key:'dayChangePercentage',caption:'% CHANGE',type:'number'},
+    {key:'dayHigh',caption:'DAY HIGH',type:'number'},
+    {key:'dayLow',caption:'DAY LOW',type:'number'},
+    {key:'yearHigh',caption:'52 WEEK HIGH',type:'number'},
+    {key:'yearLow',caption:'52 WEEK LOW',type:'number'},
+    {key:'lifeHigh',caption:'LIFE TIME HIGH',type:'number'},
+    {key:'lifeLow',caption:'LIFE TIME LOW',type:'number'},
+    {key:'dayVolume',caption:'DAY VOLUME',type:'number'},
   ];
   $(attributeMapping).each(function (index, attribute) {
-    var valObj = processAttribute($, attribute.caption);
+    var valObj = processAttribute($, attribute);
     quoteObj.nse[attribute.key] = valObj.nseVal;
     quoteObj.bse[attribute.key] = valObj.bseVal;
   });
