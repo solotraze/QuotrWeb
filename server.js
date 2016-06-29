@@ -29,7 +29,18 @@ var serveSocket = function (socket, stockCode) {
         console.log('Error in getting quote. Error: '+err);
       }
       else {
-        socket.emit('quote', quote);
+        var minimalQuote = {
+          lastTradedPrice: quote.nse.lastTradedPrice,
+          lastTradeTime: quote.nse.lastTradeTime,
+          bestBid: quote.nse.bestBid,
+          bestOffer: quote.nse.bestOffer,
+          bestBidQuantity: quote.nse.bestBidQuantity,
+          bestOfferQuantity: quote.nse.bestOfferQuantity,
+          nifty: quote.nifty,
+          niftyChange: quote.niftyChange,
+        };
+
+        socket.emit('quote', minimalQuote);
       }
     });
   }
