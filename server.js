@@ -17,16 +17,17 @@ io.on('connection', function(socket) {
   console.log('A user connected');
 
   socket.on('register_code', function(code) {
+    var thisSocket = this;
     curStockCode = code;
     console.log('Registered code: ' + code);
-    io.emit('register_code','success');
+    thisSocket.emit('register_code','success');
 
     quotr.getQuote(code, function(err, quote) {
       if (err) {
         console.log('Error in getting quote. Error: '+err);
       }
       else {
-        io.emit('quote', quote);
+        thisSocket.emit('quote', quote);
       }
     });
   });
