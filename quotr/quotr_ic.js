@@ -7,8 +7,8 @@ var processAttribute = function ($, attribute) {
   var nseElement = $("td:contains("+ attribute.caption+ ")").next();
   var nseText = (nseElement.text().trim());
   var bseText = (nseElement.next().text().trim());
-  var nseVal = attribute.type === 'number' ? parseFloat(nseText) : nseText;
-  var bseVal = attribute.type === 'number' ? parseFloat(bseText) : bseText;
+  var nseVal = attribute.type === 'number' ? parseFloat(nseText.replace(/[,]/g,'')) : nseText;
+  var bseVal = attribute.type === 'number' ? parseFloat(bseText.replace(/[,]/g,'')) : bseText;
 
   var attributeValues = { nseVal: nseVal, bseVal: bseVal };
   return attributeValues;
