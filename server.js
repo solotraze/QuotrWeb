@@ -4,7 +4,9 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var quotr = require('./quotr/quotr');
 
+var bgTask = null;
 var socketList = []; 
+var refreshTime = 5000;
 
 app.use('/', express.static(__dirname+'/html'));
 app.use('/dist', express.static(__dirname+'/dist'));
@@ -57,9 +59,25 @@ io.on('connection', function(socket) {
     console.log('Registered code: ' + code);
     thisSocket.emit('register_code','success');
   });
+
+  socket.on('set_refresh_time', function(ms) {
+    try {
+      console.log('Setting refresh time to: ' + ms.toString() + ' milliseconds');
+      refreshTime = parseInt(ms);
+
+      if (bgTask) { clearInterval(bgTask); }
+      bgTask = setInterval(serveSockets, refreshTime);
+    }
+    catch(err) { console.log('Error: Failed to set refresh time.'); }
+  });
+
+  socket.on('clear_clients', function () {
+    socketList = [];
+    console.log('Cleared all  stock listening requests');
+  });
 });
 
 server.listen(8080, '192.168.187.130', function() {
-  setInterval(serveSockets, 5000);
+  bgTask = setInterval(serveSockets, refreshTime);
   console.log('App started at port 8080.');
 });

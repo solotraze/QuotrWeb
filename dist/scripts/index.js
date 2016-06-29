@@ -15,3 +15,15 @@ var getQuote = function(stockCode) {
     socket.emit('register_code', stockCode);
   }
 };
+
+var setRefreshTime = function(ms) {
+  if (socket) {
+    socket.emit('set_refresh_time', ms);
+  }
+};
+
+var clearClients = function() {
+  if (socket) {
+    socket.emit('clear_clients', '');
+  }
+};
