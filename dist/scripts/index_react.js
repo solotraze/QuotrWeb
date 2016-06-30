@@ -1,3 +1,57 @@
+var QuoteControlBox = React.createClass({
+  getInitialState: function() {
+    return { stockCode: '', refreshTime: ''};
+  },
+  onStockCodeChange: function(e) {
+    this.setState ({ stockCode: e.target.value });
+  },
+  onRefreshTimeChange: function(e) {
+    this.setState ({ refreshTime: e.target.value });
+  },
+  onWatchStock: function(e) {
+    e.preventDefault();
+    var stockCode = this.state.stockCode.trim();
+    if (!stockCode) {
+      return;
+    }
+
+    // post to server
+    //this.props.onWatchStock({stockCode: stockCode });
+    getQuote(stockCode);
+  },
+  onSetRefreshTime: function(e) {
+    var refreshTime = this.state.refreshTime.trim();
+    if (!refreshTime) {
+      return;
+    }
+
+    // post to server
+    //this.props.onSetRefreshTime({refreshTime: refreshTime });
+    setRefreshTime(refreshTime * 1000);
+  },
+  onClearClients: function(e) {
+	clearClients();  
+  },
+  render: function() {
+	return (
+	  <div className="quoteBox">
+	    <form onSubmit={this.onWatchStock}>
+	      <label for="txtStockCode">Code: </label>
+          <input type="text" id="txtStockCode" 
+            onChange={this.onStockCodeChange} value={this.state.stockCode}/>
+          <input type="submit" value="Watch" />
+          
+          <label for="txtRefreshTime">Refresh Time(s): </label>
+          <input type="text" id="txtRefreshTime" 
+            onChange={this.onRefreshTimeChange} value={this.state.refreshTime}/>
+          <input type="button" value="Set Time" onClick={this.onSetRefreshTime} />
+          <input type="button" value="Clear Clients" onClick={this.onClearClients} />
+        </form>
+      </div>	
+	);
+  }	
+});
+
 var QuoteBox = React.createClass({
   setQuote: function (quote) {
     console.log('--- Quote recieved');
@@ -32,6 +86,7 @@ var QuoteBox = React.createClass({
   render: function() {
     return (
       <div className="quoteBox">
+      <QuoteControlBox />
         <table className="quoteDetails">
           <tbody>
             <tr>
@@ -80,6 +135,6 @@ var QuoteBox = React.createClass({
 });
 
 ReactDOM.render(
-  <QuoteBox stockCode="ALLBAN" refreshTime="5000" />,
+  <QuoteBox />,
   document.getElementById('divQuoteContent')
 );
